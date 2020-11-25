@@ -1,0 +1,11 @@
+.classpath
+.project
+target/
+build/
+logs/
+.idea/
+.gradle/
+bin/
+out/
+work/
+git.properties
