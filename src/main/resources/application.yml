@@ -1,0 +1,21 @@
+http:
+  port: 8080
+
+application:
+  home: .
+
+server:
+  tomcat:
+    basedir: ${application.home}
+    max-threads: 400
+    accesslog:
+      enabled: true
+      pattern: "%t lbip=%h identd=%l clientId=%{clientId}i user=%u responseStatus=%s method=%m url=%U bytes=%b duration=%D thread=%I location=%{Location}o mc1=%{MC1}c"
+  port: 8443
+  ssl:
+    key-store: zzm.jks
+    key-store-password: 123456
+  compression:
+    enabled: true
+    min-response-size: 2048
+    mime-types: application/json

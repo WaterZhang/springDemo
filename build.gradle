@@ -1,21 +1,72 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.0'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
     id 'java'
     id 'war'
+    id 'maven'
+}
+
+ext {
+    name = 'springdemo'
+    description = """spring demo"""
+    startClass = 'com.zhangzemiao.www.springdemo.Application'
+    depotInfo='none'
+    buildType='sandbox'
 }
 
 group 'com.zhangzemiao.www.springdemo'
 version '1.0-SNAPSHOT'
 sourceCompatibility = '11'
 
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'idea'
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+bootRun {
+    configure {
+        systemProperty "application.environment", "dev"
+        systemProperty "spring.profiles.active", "dev"
+        systemProperty "application.home", "."
+    }
+
+    jvmArgs = [
+            "-Dproject.name=${project.name}",
+            "-Dapplication.name=${project.name}",
+            "-Dapplication.environment=dev",
+            "-Dapplication.home=.",
+            '-Xdebug',
+            '-Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n',
+            '-XX:-OmitStackTraceInFastThrow'
+    ]
+}
+
+bootWar {
+    manifest {
+        attributes(
+                "Application-Name": "${project.name}",
+                "Application-Version": "${project.version}",
+                "Application-Description": "${project.description}",
+                "Built-By": System.getProperty("user.name"),
+                "Build-Jdk": System.getProperty("java.version"),
+                "Build-Time": new Date(),
+                "Build": "${buildType}",
+                "Branch": "test",
+                "Depot": "test",
+                "mainClass": "${startClass}")
+    }
 }
