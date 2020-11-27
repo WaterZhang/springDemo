@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'war'
     id 'maven'
+    id 'org.asciidoctor.convert' version '1.5.6'
 }
 
 ext {
@@ -22,6 +23,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: "io.spring.dependency-management"
 apply plugin: 'idea'
+apply plugin: 'org.asciidoctor.convert'
 
 repositories {
     mavenCentral()
@@ -37,7 +39,28 @@ dependencies {
     }
 }
 
+asciidoctor {
+    sourceDir = file('src/main/docs')
+    outputDir "$projectDir/src/main/resources/public"
+    backends 'html5'
+    attributes 'source-highlighter' : 'prettify'
+
+}
+
+task cleanTempDir(type: Delete) {
+    delete fileTree(dir: 'src/main/resources/public')
+}
+
+clean {
+    dependsOn cleanTempDir
+}
+
+build {
+    dependsOn asciidoctor
+}
+
 bootRun {
+    dependsOn asciidoctor
     configure {
         systemProperty "application.environment", "dev"
         systemProperty "spring.profiles.active", "dev"

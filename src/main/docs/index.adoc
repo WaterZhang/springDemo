@@ -1,0 +1,14 @@
+= {project-name}
+
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:sectlinks:
+
+== Quick links
+
+link:/greeting.json[Greeting JSON]
+
+link:/greeting.html[Greeting JSP]
+
+link:/buildInfo[Build Info]
