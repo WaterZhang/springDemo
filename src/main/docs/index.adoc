@@ -7,8 +7,8 @@
 
 == Quick links
 
-link:/greeting.json[Greeting JSON]
-
 link:/greeting.html[Greeting JSP]
+
+link:/swagger-ui/index.html[Swagger UI]
 
 link:/buildInfo[Build Info]

@@ -19,3 +19,9 @@ server:
     enabled: true
     min-response-size: 2048
     mime-types: application/json
+
+swagger:
+  email: nhzzm520@gmail.com
+  description: "demo for Spring frameworks"
+  version: "1.0"
+  title: SpringDemo
