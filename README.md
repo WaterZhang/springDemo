@@ -13,5 +13,6 @@ build spring boot APP, I will start to integrate other frameworks in this projec
 ## running
 > ./gradlew clean bootRun
 
-
+## Test
+> https://localhost:8443
 
