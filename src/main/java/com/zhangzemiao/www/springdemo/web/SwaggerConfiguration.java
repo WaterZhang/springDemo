@@ -39,7 +39,7 @@ public class SwaggerConfiguration {
     }
 
     private ApiInfo apiInfo() {
-        final Contact contact = new Contact("Water Zemiao Zhang", "zhangzemiao.com", email);
+        final Contact contact = new Contact("Water Zemiao Zhang", null, email);
         return new ApiInfoBuilder()
                    .title(title)
                    .description(description)
