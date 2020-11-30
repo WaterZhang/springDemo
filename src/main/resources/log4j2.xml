@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration debug="true">
+    <Properties>
+        <Property name="application.home">.</Property>
+        <Property name="application.name">springDemo</Property>
+        <Property name="application.environment">dev</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="consoleAppender" target="STDOUT">
+            <PatternLayout>
+                %d [%.30t] %c %p %X %m%n
+            </PatternLayout>
+        </Console>
+
+        <Async name="devAppender">
+            <AppenderRef ref="consoleAppender" level="DEBUG"/>
+        </Async>
+
+        <RollingFile name="errorsAppender"
+                     fileName="${sys:application.home}/logs/${sys:application.name}-errors.log"
+                     filePattern="${sys:application.home}/logs/${sys:application.name}-errors-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>
+                    DateTime=%d{ISO8601}{GMT} Thread=[%.30t], Logger=%c, Type=%p, %X, Message=[%m]%n
+                </Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1000KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100"/>
+            <Filters>
+                <ThresholdFilter level="error"/>
+            </Filters>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="errorsAppender"/>
+            <AppenderRef ref="devAppender"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

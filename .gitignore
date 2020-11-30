@@ -9,3 +9,4 @@ bin/
 out/
 work/
 git.properties
+src/main/resources/public/html5/index.html

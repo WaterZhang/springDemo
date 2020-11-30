@@ -15,6 +15,10 @@ ext {
     buildType='sandbox'
 }
 
+configurations.all {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
 group 'com.zhangzemiao.www.springdemo'
 version '1.0-SNAPSHOT'
 sourceCompatibility = '11'
@@ -35,6 +39,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     //jsp support
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    //log4j2
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
     //swagger 3.0
     implementation "io.springfox:springfox-boot-starter:3.0.0"
