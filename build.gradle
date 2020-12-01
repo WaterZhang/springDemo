@@ -13,6 +13,8 @@ ext {
     startClass = 'com.zhangzemiao.www.springdemo.Application'
     depotInfo='none'
     buildType='sandbox'
+    feignVersion = '11.0'
+    hystrixVersion = '1.5.18'
 }
 
 configurations.all {
@@ -44,7 +46,19 @@ dependencies {
 
     //swagger 3.0
     implementation "io.springfox:springfox-boot-starter:3.0.0"
-    compile "io.springfox:springfox-swagger-ui:3.0.0"
+    implementation "io.springfox:springfox-swagger-ui:3.0.0"
+
+    //open feign
+    implementation "io.github.openfeign:feign-core:$feignVersion"
+    implementation "io.github.openfeign:feign-jackson:$feignVersion"
+    implementation "io.github.openfeign:feign-gson:$feignVersion"
+    implementation "io.github.openfeign:feign-hystrix:$feignVersion"
+    implementation "com.netflix.hystrix:hystrix-servo-metrics-publisher:$hystrixVersion"
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
+    implementation group: 'io.github.openfeign', name: 'feign-okhttp', version: '11.0'
+    implementation group: 'commons-configuration', name: 'commons-configuration', version: '1.8'
+
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

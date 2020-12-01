@@ -1,0 +1,5 @@
+feign:
+  github:
+    connectTimeoutMillis: 2000
+    readTimeoutMillis: 5000
+    url: https://api.github.com
