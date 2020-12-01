@@ -25,3 +25,11 @@ swagger:
   description: "Demo for Spring frameworks"
   version: "1.0"
   title: SpringDemo
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000

@@ -35,9 +35,43 @@
             </Filters>
         </RollingFile>
 
+        <RollingFile name="traceLogAppender"
+                     fileName="${sys:application.home}/logs/${sys:application.name}-traceLog.log"
+                     filePattern="${sys:application.home}/logs/${sys:application.name}-traceLog-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>
+                    DateTime=%d{ISO8601}{GMT} Thread=[%.30t], Logger=%c, Type=%p, %X, Message=[%m]%n
+                </Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1000KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100"/>
+        </RollingFile>
+
+        <RollingFile name="transactionLogAppender"
+                     fileName="${sys:application.home}/logs/${sys:application.name}-transactionLog.log"
+                     filePattern="${sys:application.home}/logs/${sys:application.name}-transactionLog-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>
+                    DateTime=%d{ISO8601}{GMT} Thread=[%.30t], Logger=%c, Type=%p, %X, Message=[%m]%n
+                </Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1000KB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100"/>
+        </RollingFile>
+
     </Appenders>
 
     <Loggers>
+        <Logger name="com.zhangzemiao.www.springdemo.domain.feign.log.FeignLogger.Transaction" additivity="false">
+            <AppenderRef ref="transactionLogAppender" level="INFO"/>
+        </Logger>
+        <Logger name="com.zhangzemiao.www.springdemo.domain.feign.log.FeignLogger.Trace" additivity="false">
+            <AppenderRef ref="traceLogAppender" level="INFO"/>
+        </Logger>
         <Root level="INFO">
             <AppenderRef ref="errorsAppender"/>
             <AppenderRef ref="devAppender"/>
