@@ -10,6 +10,15 @@ build spring boot APP, I will start to integrate other frameworks in this projec
 ## HTTPS support
 > keytool -genkeypair -alias zzm -keyalg RSA -keysize 2048 -keystore zzm.jks 
 
+## Log4j2
+> check log4j2.xml
+
+## Integrate [OpenFeign](https://github.com/OpenFeign/feign)
+> add Transaction and Trace log
+
+## [Hystrix](https://github.com/Netflix/Hystrix) support Circuit breaker pattern
+> Check hystrix configuration [here](https://github.com/Netflix/Hystrix/wiki/Configuration).
+
 ## build
 > ./gradlew clean build
 

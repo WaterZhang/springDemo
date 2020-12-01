@@ -40,10 +40,6 @@ public class GithubClient {
                                               .traceEnabled(true, Collections.EMPTY_MAP)
                                               .build(GithubConnector.class, url, null);
         return connector.contributors(owner, repo);
-//        return Feign.builder()
-//             .client(new NoSSLVerifierClient())
-//             .decoder(new GsonDecoder())
-//             .target(GithubConnector.class, "https://api.github.com").contributors(owner, repo);
     }
 
 
