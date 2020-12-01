@@ -1,4 +1,4 @@
-package com.zhangzemiao.www.springdemo.domain.feign;
+package com.zhangzemiao.www.springdemo.interceptor;
 
 import com.zhangzemiao.www.springdemo.domain.feign.log.HystrixInitializer;
 import com.zhangzemiao.www.springdemo.domain.feign.log.HystrixLogger;

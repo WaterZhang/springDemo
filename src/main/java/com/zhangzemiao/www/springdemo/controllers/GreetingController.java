@@ -16,7 +16,7 @@ public class GreetingController {
     private final AtomicLong counter = new AtomicLong();
     private Logger logger = LoggerFactory.getLogger(GreetingController.class);
 
-    @GetMapping("/greeting.json")
+    @GetMapping("/api/greeting.json")
     @ApiOperation(value = "greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name){
         logger.error("test");

@@ -19,7 +19,7 @@ public class GithubDataController {
         this.githubService = githubService;
     }
 
-    @GetMapping("/github/{owner}/{repo}/contributors")
+    @GetMapping("/api/github/{owner}/{repo}/contributors")
     @ApiOperation(value = "greeting")
     List<Contributor> getContributors(@PathVariable("owner") String owner,
                                       @PathVariable("repo") String repo){

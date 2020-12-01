@@ -1,6 +1,7 @@
 package com.zhangzemiao.www.springdemo.web;
 
-import com.zhangzemiao.www.springdemo.domain.feign.HystrixInitializingInterceptor;
+import com.zhangzemiao.www.springdemo.interceptor.ContextLoggingInterceptor;
+import com.zhangzemiao.www.springdemo.interceptor.HystrixInitializingInterceptor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -31,8 +32,8 @@ public class ServletContextConfig implements WebMvcConfigurer, ServletContextAwa
     private ServletContext servletContext;
     private final HystrixInitializingInterceptor hystrixInitializingInterceptor;
     private static final String[] REST_APIS = new String[]{
-        "/*.json",
-        "/github/**"
+        "/api/*",
+        "/api/**",
     };
 
 
@@ -65,6 +66,9 @@ public class ServletContextConfig implements WebMvcConfigurer, ServletContextAwa
         registry.addInterceptor(hystrixInitializingInterceptor)
                 .addPathPatterns(REST_APIS)
                 .order(1);
+
+        registry.addInterceptor(new ContextLoggingInterceptor())
+                .addPathPatterns(REST_APIS);
     }
 
     @Bean
