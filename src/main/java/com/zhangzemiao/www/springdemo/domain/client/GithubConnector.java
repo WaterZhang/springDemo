@@ -10,7 +10,7 @@ public interface GithubConnector {
 
     @Headers("Content-Type: application/json")
     @RequestLine("GET /repos/{owner}/{repo}/contributors")
-    List<Contributor> contributors(@Param("owner") String owner,
+    List<Contributor> getGithubContributors(@Param("owner") String owner,
                                    @Param("repo") String repo);
 
 }

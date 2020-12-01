@@ -6,7 +6,7 @@ import java.util.Map;
 public interface ILoggingAwareContext {
 
     /**
-     * @deprecated use {@link ILoggingAwareContext#isTraceEnabled(Map)}
+     * use {@link ILoggingAwareContext#isTraceEnabled(Map)}
      */
     boolean isTraceEnabled();
 

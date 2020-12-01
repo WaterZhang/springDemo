@@ -39,7 +39,7 @@ public class GithubClient {
                                                                            true))
                                               .traceEnabled(true, Collections.EMPTY_MAP)
                                               .build(GithubConnector.class, url, null);
-        return connector.contributors(owner, repo);
+        return connector.getGithubContributors(owner, repo);
     }
 
 
