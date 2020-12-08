@@ -21,78 +21,78 @@ public class LogOptions {
     private List<Subst> substitutes = new ArrayList<>();
     private boolean retryOnIOException;
 
-    public LogOptions traceEnabled(Function<Map<String, Collection<String>>, Boolean> func) {
+    public LogOptions traceEnabled(final Function<Map<String, Collection<String>>, Boolean> func) {
         this.traceEnabled = requireNonNull(func, "traceEnabled cannot be null");
         return this;
     }
 
-    public LogOptions contextMap(Supplier<Map<String, String>> contextMap) {
+    public LogOptions contextMap(final Supplier<Map<String, String>> contextMap) {
         this.contextMap = requireNonNull(contextMap, "contextMap cannot be null");
         return this;
     }
 
-    public LogOptions requestHeadersToLog(Supplier<Set<String>> requestHeadersToLog) {
+    public LogOptions requestHeadersToLog(final Supplier<Set<String>> requestHeadersToLog) {
         this.requestHeadersToLog = requireNonNull(requestHeadersToLog, "requestHeadersToLog cannot be null");
         return this;
     }
 
-    public LogOptions responseHeadersToLog(Supplier<Set<String>> responseHeadersToLog) {
+    public LogOptions responseHeadersToLog(final Supplier<Set<String>> responseHeadersToLog) {
         this.responseHeadersToLog = requireNonNull(responseHeadersToLog, "responseHeadersToLog cannot be null");
         return this;
     }
 
-    public LogOptions hide(Pattern sensitiveDataPattern) {
+    public LogOptions hide(final Pattern sensitiveDataPattern) {
         // no null check for backward compatibility
         this.sensitiveDataPattern = sensitiveDataPattern;
         return this;
     }
 
-    public LogOptions subst(Pattern pattern, String value) {
+    public LogOptions subst(final Pattern pattern, final String value) {
         this.substitutes.add(new Subst(
             requireNonNull(pattern, "pattern cannot be null"),
             requireNonNull(value, "value cannot be null")));
         return this;
     }
 
-    public LogOptions retryOnIOException(boolean retryOnIOException) {
+    public LogOptions retryOnIOException(final boolean retryOnIOException) {
         this.retryOnIOException = retryOnIOException;
         return this;
     }
 
-    boolean isEnabled(Map<String, Collection<String>> requestHeaders) {
-        return Utils.defaultIfNull(traceEnabled.apply(requestHeaders), false);
+    public boolean isEnabled(final Map<String, Collection<String>> requestHeaders) {
+        return LogUtils.defaultIfNull(traceEnabled.apply(requestHeaders), false);
     }
 
     /**
      *
      * @return never null
      */
-    Map<String, String> getContextMap() {
-        Map<String, String> contextMap = this.contextMap.get();
-        return Utils.defaultIfNull(contextMap, Collections.emptyMap());
+    public Map<String, String> getContextMap() {
+        final Map<String, String> contextMap = this.contextMap.get();
+        return LogUtils.defaultIfNull(contextMap, Collections.emptyMap());
     }
 
     /**
      *
      * @return never null
      */
-    Set<String> getRequestHeadersToLog() {
-        return Utils.defaultIfNull(requestHeadersToLog.get(), Collections.emptySet());
+    public Set<String> getRequestHeadersToLog() {
+        return LogUtils.defaultIfNull(requestHeadersToLog.get(), Collections.emptySet());
     }
 
     /**
      *
      * @return never null
      */
-    Set<String> getResponseHeadersToLog() {
-        return Utils.defaultIfNull(responseHeadersToLog.get(), Collections.emptySet());
+    public Set<String> getResponseHeadersToLog() {
+        return LogUtils.defaultIfNull(responseHeadersToLog.get(), Collections.emptySet());
     }
 
-    Pattern getSensitiveDataPattern() {
+    public Pattern getSensitiveDataPattern() {
         return sensitiveDataPattern;
     }
 
-    List<Subst> getSubstitutes() {
+    public List<Subst> getSubstitutes() {
         return substitutes;
     }
 
@@ -100,11 +100,11 @@ public class LogOptions {
         return retryOnIOException;
     }
 
-    static class Subst {
+    public static class Subst {
         private final Pattern pattern;
         private final String value;
 
-        public Subst(Pattern pattern, String value) {
+        public Subst(final Pattern pattern, final String value) {
             this.pattern = pattern;
             this.value = value;
         }

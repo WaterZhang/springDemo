@@ -19,7 +19,7 @@ public class SslUtil {
 
     public static SSLSocketFactory getSslSocketFactory() {
         try {
-            SSLContext sslContext = SSLContext.getInstance("SSL");
+            final SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, getTrustManager(), new SecureRandom());
             return sslContext.getSocketFactory();
         } catch (KeyManagementException | NoSuchAlgorithmException ex) {
@@ -29,7 +29,7 @@ public class SslUtil {
 
     public static SSLSocketFactory getTlsSocketFactory() {
         try {
-            SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+            final SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
             sslContext.init(null, null, null);
             return sslContext.getSocketFactory();
         } catch (KeyManagementException | NoSuchAlgorithmException ex) {
@@ -44,15 +44,18 @@ public class SslUtil {
     private static TrustManager[] getTrustManager() {
         return new TrustManager[] {
             new X509TrustManager() {
+                @Override
                 public X509Certificate[] getAcceptedIssuers() {
                     return new X509Certificate[0];
                 }
 
-                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                @Override
+                public void checkClientTrusted(final X509Certificate[] certs, final String authType) {
                     // Nothing to do
                 }
 
-                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                @Override
+                public void checkServerTrusted(final X509Certificate[] certs, final String authType) {
                     // Nothing to do
                 }
             }

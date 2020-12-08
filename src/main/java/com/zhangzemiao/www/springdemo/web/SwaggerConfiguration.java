@@ -47,7 +47,7 @@ public class SwaggerConfiguration {
                    .build();
     }
 
-    List<RequestParameter> globalOperationParameters(){
+    private List<RequestParameter> globalOperationParameters(){
         final List<RequestParameter> parameters = new ArrayList<>();
         final RequestParameter clientId =
             new RequestParameterBuilder()

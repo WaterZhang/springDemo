@@ -23,7 +23,7 @@ public class FeignLogger extends Logger {
         this(true, contextMap);
     }
 
-    public FeignLogger(LogOptions logOptions) {
+    public FeignLogger(final LogOptions logOptions) {
         this(new FeignLoggerImpl(new LoggerFactoryProvider(), logOptions));
     }
 
@@ -31,7 +31,7 @@ public class FeignLogger extends Logger {
      * use {@link #FeignLogger(LogOptions)}
      * @param loggerContext
      */
-    public FeignLogger(ILoggingAwareContext loggerContext) {
+    public FeignLogger(final ILoggingAwareContext loggerContext) {
         this(new FeignLoggerImpl(new LoggerFactoryProvider(),
                                  new LogOptions()
                                      .traceEnabled(loggerContext::isTraceEnabled)
@@ -85,23 +85,27 @@ public class FeignLogger extends Logger {
     /**
      * Package visible constructor for tests
      */
-    FeignLogger(FeignLoggerImpl feignLoggerImpl) {
+    /* default */ FeignLogger(final FeignLoggerImpl feignLoggerImpl) {
+        super();
         this.feignLoggerImpl = feignLoggerImpl;
     }
 
 
     @Override
-    protected void logRequest(String configKey, Level logLevel, Request request) {
+    protected void logRequest(final String configKey, final Level logLevel, final Request request) {
         feignLoggerImpl.logRequest(configKey, logLevel, request);
     }
 
     @Override
-    protected Response logAndRebufferResponse(String configKey, Level logLevel, Response response, long elapsedTime) throws IOException {
+    protected Response logAndRebufferResponse(final String configKey,
+                                              final Level logLevel,
+                                              final Response response,
+                                              final long elapsedTime) throws IOException {
         return feignLoggerImpl.logAndRebufferResponse(configKey, logLevel, response, elapsedTime);
     }
 
     @Override
-    protected void log(String configKey, String format, Object... args) {
+    protected void log(final String configKey, final String format, final Object... args) {
         feignLoggerImpl.log(configKey, format, args);
     }
 }

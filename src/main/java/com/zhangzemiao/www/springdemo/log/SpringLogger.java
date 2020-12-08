@@ -17,25 +17,25 @@ public class SpringLogger {
     private Logger logger;
     private MDCWrapper mdcWrapper;
 
-    static public SpringLogger getLogger(String name) {
+    static public SpringLogger getLogger(final String name) {
         return new SpringLogger(name);
     }
 
-    static public SpringLogger getLogger(Class clazz) {
+    static public SpringLogger getLogger(final Class clazz) {
         return new SpringLogger(clazz);
     }
 
-    private SpringLogger(String name) {
+    private SpringLogger(final String name) {
         logger = LoggerFactory.getLogger(name);
         mdcWrapper = new MDCWrapper();
     }
 
-    private SpringLogger(Class clazz) {
+    private SpringLogger(final Class clazz) {
         logger = LoggerFactory.getLogger(clazz);
         mdcWrapper = new MDCWrapper();
     }
 
-    public void debug(ISystemEvent event, String msg) {
+    public void debug(final ISystemEvent event, final String msg) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -45,7 +45,7 @@ public class SpringLogger {
         }
     }
 
-    public void debug(ISystemEvent event, String msg, SystemEventData eventData) {
+    public void debug(final ISystemEvent event, final String msg, final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -55,7 +55,7 @@ public class SpringLogger {
         }
     }
 
-    public void debug(ISystemEvent event, String format, Object... objects) {
+    public void debug(final ISystemEvent event, final String format, final Object... objects) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -65,7 +65,7 @@ public class SpringLogger {
         }
     }
 
-    public void debug(ISystemEvent event, String msg, Throwable throwable) {
+    public void debug(final ISystemEvent event, final String msg, final Throwable throwable) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -75,7 +75,10 @@ public class SpringLogger {
         }
     }
 
-    public void debug(ISystemEvent event, String msg, Throwable throwable, SystemEventData eventData) {
+    public void debug(final ISystemEvent event,
+                      final String msg,
+                      final Throwable throwable,
+                      final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -85,7 +88,7 @@ public class SpringLogger {
         }
     }
 
-    public void error(ISystemEvent event, String msg) {
+    public void error(final ISystemEvent event, final String msg) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -95,7 +98,9 @@ public class SpringLogger {
         }
     }
 
-    public void error(ISystemEvent event, String msg, SystemEventData eventData) {
+    public void error(final ISystemEvent event,
+                      final String msg,
+                      final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -105,7 +110,9 @@ public class SpringLogger {
         }
     }
 
-    public void error(ISystemEvent event, String format, Object... objects) {
+    public void error(final ISystemEvent event,
+                      final String format,
+                      final Object... objects) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -115,7 +122,9 @@ public class SpringLogger {
         }
     }
 
-    public void error(ISystemEvent event, String msg, Throwable throwable) {
+    public void error(final ISystemEvent event,
+                      final String msg,
+                      final Throwable throwable) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -125,7 +134,10 @@ public class SpringLogger {
         }
     }
 
-    public void error(ISystemEvent event, String msg, Throwable throwable, SystemEventData eventData) {
+    public void error(final ISystemEvent event,
+                      final String msg,
+                      final Throwable throwable,
+                      final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -135,7 +147,7 @@ public class SpringLogger {
         }
     }
 
-    public void info(ISystemEvent event, String msg) {
+    public void info(final ISystemEvent event, final String msg) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -145,7 +157,9 @@ public class SpringLogger {
         }
     }
 
-    public void info(ISystemEvent event, String msg, SystemEventData eventData) {
+    public void info(final ISystemEvent event,
+                     final String msg,
+                     final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -155,7 +169,9 @@ public class SpringLogger {
         }
     }
 
-    public void info(ISystemEvent event, String format, Object... objects) {
+    public void info(final ISystemEvent event,
+                     final String format,
+                     final Object... objects) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -165,7 +181,9 @@ public class SpringLogger {
         }
     }
 
-    public void info(ISystemEvent event, String msg, Throwable throwable) {
+    public void info(final ISystemEvent event,
+                     final String msg,
+                     final Throwable throwable) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -175,7 +193,10 @@ public class SpringLogger {
         }
     }
 
-    public void info(ISystemEvent event, String msg, Throwable throwable, SystemEventData eventData) {
+    public void info(final ISystemEvent event,
+                     final String msg,
+                     final Throwable throwable,
+                     final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -185,7 +206,7 @@ public class SpringLogger {
         }
     }
 
-    public void trace(ISystemEvent event, String msg) {
+    public void trace(final ISystemEvent event, final String msg) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -195,7 +216,7 @@ public class SpringLogger {
         }
     }
 
-    public void trace(ISystemEvent event, String msg, SystemEventData eventData) {
+    public void trace(final ISystemEvent event, final String msg, final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -205,7 +226,7 @@ public class SpringLogger {
         }
     }
 
-    public void trace(ISystemEvent event, String format, Object... objects) {
+    public void trace(final ISystemEvent event, final String format, final Object... objects) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -215,7 +236,7 @@ public class SpringLogger {
         }
     }
 
-    public void trace(ISystemEvent event, String msg, Throwable throwable) {
+    public void trace(final ISystemEvent event, final String msg, final Throwable throwable) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -225,7 +246,10 @@ public class SpringLogger {
         }
     }
 
-    public void trace(ISystemEvent event, String msg, Throwable throwable, SystemEventData eventData) {
+    public void trace(final ISystemEvent event,
+                      final  String msg,
+                      final Throwable throwable,
+                      final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -235,7 +259,7 @@ public class SpringLogger {
         }
     }
 
-    public void warn(ISystemEvent event, String msg) {
+    public void warn(final ISystemEvent event, final String msg) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -245,7 +269,7 @@ public class SpringLogger {
         }
     }
 
-    public void warn(ISystemEvent event, String msg, SystemEventData eventData) {
+    public void warn(final ISystemEvent event, final String msg, final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -255,7 +279,7 @@ public class SpringLogger {
         }
     }
 
-    public void warn(ISystemEvent event, String format, Object... objects) {
+    public void warn(final ISystemEvent event, final String format, final Object... objects) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -265,7 +289,7 @@ public class SpringLogger {
         }
     }
 
-    public void warn(ISystemEvent event, String msg, Throwable throwable) {
+    public void warn(final ISystemEvent event, final String msg, final Throwable throwable) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -275,7 +299,7 @@ public class SpringLogger {
         }
     }
 
-    public void warn(ISystemEvent event, String msg, Throwable throwable, SystemEventData eventData) {
+    public void warn(final ISystemEvent event, final String msg, final Throwable throwable, final SystemEventData eventData) {
         Validate.isTrue(event != null, "System event should not be null");
         try {
             saveSystemEventInMDC(event);
@@ -309,7 +333,7 @@ public class SpringLogger {
         return logger.isInfoEnabled();
     }
 
-    private void saveSystemEventInMDC(ISystemEvent event) {
+    private void saveSystemEventInMDC(final ISystemEvent event) {
         mdcWrapper.put(EVENT_ID, event.getId());
         mdcWrapper.put(EVENT_NAME, event.getName());
     }
@@ -319,9 +343,9 @@ public class SpringLogger {
         mdcWrapper.remove(EVENT_NAME);
     }
 
-    private String appendEventDataToMsg(String msg, SystemEventData eventData) {
+    private String appendEventDataToMsg(final String msg, final SystemEventData eventData) {
         final Map<String, Object> data = eventData.getData();
-        final List<String> eventEntries = new ArrayList<String>();
+        final List<String> eventEntries = new ArrayList<>();
 
         for (final String key : data.keySet()) {
             eventEntries.add(key + '=' + Objects.toString(data.get(key)));
@@ -332,11 +356,11 @@ public class SpringLogger {
 
     static /* package */ class MDCWrapper {
 
-        public void put(String key, Object value) {
+        public void put(final String key, final Object value) {
             MDC.put(key, Objects.toString(value));
         }
 
-        public void remove(String key) {
+        public void remove(final String key) {
             MDC.remove(key);
         }
     }

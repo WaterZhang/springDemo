@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 public class SetterFactoryByMethodName implements SetterFactory {
 
     @Override
-    public HystrixCommand.Setter create(Target<?> target, Method method) {
+    public HystrixCommand.Setter create(final Target<?> target, final Method method) {
         return HystrixCommand.Setter
                    .withGroupKey(HystrixCommandGroupKey.Factory.asKey(target.name()))
                    .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(getHost(target.name())))

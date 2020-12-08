@@ -7,14 +7,14 @@ public class SystemEventData {
     private Map<String, Object> data;
 
     public SystemEventData() {
-        this.data = new HashMap<String, Object>();
+        this.data = new HashMap<>();
     }
 
-    public SystemEventData(Map<String, Object> data) {
+    public SystemEventData(final Map<String, Object> data) {
         this.data = data;
     }
 
-    public SystemEventData with(String key, Object value) {
+    public SystemEventData with(final String key, final Object value) {
         data.put(key, value);
         return this;
     }

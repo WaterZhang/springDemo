@@ -30,8 +30,8 @@ public class GithubDataController {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Success", response = IResponseMessage.class),
         @ApiResponse(code = 500, message = "Error", response = IResponseMessage.class)})
-    public ResponseEntity<IResponseMessage> getContributors(@PathVariable("owner") String owner,
-                                                            @PathVariable("repo") String repo){
+    public ResponseEntity<IResponseMessage> getContributors(@PathVariable("owner") final String owner,
+                                                            @PathVariable("repo") final String repo){
         return responseEntityMapper.mapWithRequestId(githubService.getContributor(owner, repo));
     }
 

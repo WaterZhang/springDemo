@@ -26,8 +26,8 @@ public class GithubClient {
         this.url = url;
     }
 
-    public List<Contributor> getContributors(String owner,
-                                             String repo){
+    public List<Contributor> getContributors(final String owner,
+                                             final String repo){
         final GithubConnector connector = hystrixFeignBuilderProvider
                                               .getCommonBuilder()
                                               .client(new NoSSLVerifierClient())

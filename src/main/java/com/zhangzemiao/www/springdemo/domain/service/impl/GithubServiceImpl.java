@@ -18,13 +18,14 @@ public class GithubServiceImpl implements IGithubService {
     private final GithubClient client;
 
     @Autowired
-    public GithubServiceImpl(GithubClient client){
+    public GithubServiceImpl(final GithubClient client){
         this.client = client;
     }
 
     @Override
-    public ContributorsRs getContributor(String owner, String repo) {
-        SystemEventData systemEventData = new SystemEventData()
+    public ContributorsRs getContributor(final String owner,
+                                         final String repo) {
+        final SystemEventData systemEventData = new SystemEventData()
                                               .with("owner", owner)
                                               .with("repo", repo);
         try {
