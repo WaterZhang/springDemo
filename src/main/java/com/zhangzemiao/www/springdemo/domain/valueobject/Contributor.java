@@ -2,10 +2,10 @@ package com.zhangzemiao.www.springdemo.domain.valueobject;
 
 public class Contributor {
 
-    private String login;
-    private long contributions;
+    private final String login;
+    private final long contributions;
 
-    public Contributor(String login, long contributions){
+    public Contributor(final String login, final long contributions){
         this.login = login;
         this.contributions = contributions;
     }

@@ -1,5 +1,6 @@
 package com.zhangzemiao.www.springdemo.domain.feign.log;
 
+@SuppressWarnings("PMD")
 public interface LoggerConstants {
         String FALLBACK = "fallback";
         String CIRCUIT_OPEN = "circuitOpen";

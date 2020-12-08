@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GreetingController {
 
-    private static final String template = "Hello, %s!";
+    private static final String TEMPLATE = "Hello, %s!";
+    private static final Logger LOGGER = LoggerFactory.getLogger(GreetingController.class);
     private final AtomicLong counter = new AtomicLong();
-    private Logger logger = LoggerFactory.getLogger(GreetingController.class);
 
     @GetMapping("/api/greeting.json")
     @ApiOperation(value = "greeting")
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name){
-        logger.error("test");
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
+    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") final String name){
+        LOGGER.error("test");
+        return new Greeting(counter.incrementAndGet(), String.format(TEMPLATE, name));
     }
 
 }

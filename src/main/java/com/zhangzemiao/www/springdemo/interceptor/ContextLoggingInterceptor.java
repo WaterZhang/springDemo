@@ -16,10 +16,9 @@ public class ContextLoggingInterceptor extends HandlerInterceptorAdapter {
     private MDCWrapper mdcWrapper = new MDCWrapper();
 
     @Override
-    public boolean preHandle(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        Object handler) throws IOException {
+    public boolean preHandle(final HttpServletRequest request,
+                             final HttpServletResponse response,
+                             final Object handler) throws IOException {
 
         final Map<String, String> map = mdcContextBuilder.buildMDCContext(request, handler);
 
@@ -31,18 +30,16 @@ public class ContextLoggingInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public void afterCompletion(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        Object handler,
-        Exception ex) throws Exception {
+    public void afterCompletion(final HttpServletRequest request,
+                                final HttpServletResponse response,
+                                final Object handler,
+                                final Exception ex) throws Exception {
         super.afterCompletion(request, response, handler, ex);
         mdcWrapper.clear();
     }
 
-    private void setRequestAttributes(
-        HttpServletRequest request,
-        Map<String, String> contextMap) {
+    private void setRequestAttributes(final HttpServletRequest request,
+                                      final Map<String, String> contextMap) {
         if (contextMap != null) {
             request.setAttribute("requestId", StringUtils.defaultString(contextMap.get("requestId")));
             request.setAttribute("originRequestId",
@@ -51,11 +48,9 @@ public class ContextLoggingInterceptor extends HandlerInterceptorAdapter {
         }
     }
 
-    static class MDCWrapper {
+    private static class MDCWrapper {
 
-        public void put(
-            String key,
-            String val) throws IllegalArgumentException {
+        public void put(final String key, final String val) throws IllegalArgumentException {
             MDC.put(key, Objects.toString(val));
         }
 

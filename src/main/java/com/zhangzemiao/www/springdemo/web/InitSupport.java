@@ -61,7 +61,7 @@ public class InitSupport implements TomcatConnectorCustomizer, TomcatContextCust
     }
 
     @Override
-    public void customize(Context context) {
+    public void customize(final Context context) {
         final SecurityConstraint securityConstraint = new SecurityConstraint();
         securityConstraint.setUserConstraint("CONFIDENTIAL");
         final SecurityCollection collection = new SecurityCollection();

@@ -5,9 +5,10 @@ public class ErrorDetails {
     private String errorMessage;
 
     public ErrorDetails() {
+        //NO PMD
     }
 
-    public ErrorDetails(int errorCode, String errorMessage) {
+    public ErrorDetails(final int errorCode, final String errorMessage) {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }

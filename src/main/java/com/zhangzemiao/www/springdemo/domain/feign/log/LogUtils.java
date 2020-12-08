@@ -11,22 +11,22 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-public class Utils {
-    public static String asSplunkLogString(Map<String, String> parameters) {
-        StringBuilder out = new StringBuilder();
-        for (String name:  parameters.keySet()) {
-            String value = Objects.toString(parameters.get(name));
+public class LogUtils {
+    public static String asSplunkLogString(final Map<String, String> parameters) {
+        final StringBuilder out = new StringBuilder();
+        for (final String name:  parameters.keySet()) {
+            final String value = Objects.toString(parameters.get(name));
             out.append(String.format("%s=%s, ", Objects.toString(name), value));
         }
         return out.toString();
     }
 
 
-    public static String asSplunkMessage(String message) {
+    public static String asSplunkMessage(final String message) {
         return String.format("[%s]", Objects.toString(message));
     }
 
-    public static String decodeOrDefault(byte[] data, Charset charset, String defaultValue) {
+    public static String decodeOrDefault(final byte[] data, final Charset charset, final String defaultValue) {
         if (data == null) {
             return defaultValue;
         }
@@ -38,11 +38,11 @@ public class Utils {
         }
     }
 
-    public static <T> T defaultIfNull(T object, T defaultObject) {
+    public static <T> T defaultIfNull(final T object, final T defaultObject) {
         return object == null ? defaultObject : object;
     }
 
-    public static RetryableException convertToRetryableException(IOException e, Response response) {
+    public static RetryableException convertToRetryableException(final IOException e, final Response response) {
         return new RetryableException(
             response.status(),
             String.format("IO exception while reading response: %s, url: %s" ,

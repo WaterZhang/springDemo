@@ -31,6 +31,8 @@ apply plugin: "io.spring.dependency-management"
 apply plugin: 'idea'
 apply plugin: 'org.asciidoctor.convert'
 
+apply from: 'gradle/pmd.gradle'
+
 repositories {
     mavenCentral()
 }

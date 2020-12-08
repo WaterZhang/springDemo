@@ -9,12 +9,13 @@ public class HystrixLoggerExecutionHook extends HystrixCommandExecutionHook {
 
     private HystrixLogger hystrixLogger;
 
-    public HystrixLoggerExecutionHook(HystrixLogger hystrixLogger) {
+    public HystrixLoggerExecutionHook(final HystrixLogger hystrixLogger) {
+        super();
         this.hystrixLogger = hystrixLogger;
     }
 
     @Override
-    public <T> T onEmit(HystrixInvokable<T> commandInstance, T value) {
+    public <T> T onEmit(final HystrixInvokable<T> commandInstance, final T value) {
         if (commandInstance instanceof HystrixInvokableInfo) {
             hystrixLogger.logTransaction((HystrixInvokableInfo<?>) commandInstance);
         }
@@ -22,7 +23,9 @@ public class HystrixLoggerExecutionHook extends HystrixCommandExecutionHook {
     }
 
     @Override
-    public <T> Exception onError(HystrixInvokable<T> commandInstance, HystrixRuntimeException.FailureType failureType, Exception e) {
+    public <T> Exception onError(final HystrixInvokable<T> commandInstance,
+                                 final HystrixRuntimeException.FailureType failureType,
+                                 final Exception e) {
         hystrixLogger.logError(commandInstance, failureType, e);
         if (commandInstance instanceof HystrixInvokableInfo) {
             hystrixLogger.logTransaction((HystrixInvokableInfo<?>) commandInstance);

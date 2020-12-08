@@ -9,11 +9,11 @@ public class ContributorsRs implements IResponseMessage<List<Contributor>>{
     private List<Contributor> response;
     private ErrorDetails errorDetails;
 
-    public ContributorsRs(List<Contributor> contributors){
+    public ContributorsRs(final List<Contributor> contributors){
         this.response = contributors;
     }
 
-    public ContributorsRs(ErrorDetails errorDetails){
+    public ContributorsRs(final ErrorDetails errorDetails){
         this.errorDetails = errorDetails;
     }
 

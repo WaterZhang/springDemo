@@ -6,7 +6,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import com.zhangzemiao.www.springdemo.domain.feign.interceptor.RequestClientIdInterceptor;
 import com.zhangzemiao.www.springdemo.domain.feign.log.FeignLogger;
 import com.zhangzemiao.www.springdemo.domain.feign.log.LogOptions;
-import com.zhangzemiao.www.springdemo.domain.feign.log.Utils;
+import com.zhangzemiao.www.springdemo.domain.feign.log.LogUtils;
 import com.zhangzemiao.www.springdemo.domain.feign.settingfactory.SetterFactoryByMethodName;
 import feign.Client;
 import feign.ExceptionPropagationPolicy;
@@ -38,8 +38,7 @@ import org.slf4j.MDC;
 
 public class HystrixFeignBuilder {
 
-
-    private final List<RequestInterceptor> requestInterceptors = new ArrayList<RequestInterceptor>();
+    private final List<RequestInterceptor> requestInterceptors = new ArrayList<>();
     private Client client = new Client.Default(null, null);
     private Retryer retryer = new Retryer.Default(100, SECONDS.toMillis(1), 0);
     private Encoder encoder = new Encoder.Default();
@@ -55,11 +54,11 @@ public class HystrixFeignBuilder {
     private QueryMapEncoder queryMapEncoder = new BeanQueryMapEncoder();
     private ExceptionPropagationPolicy propagationPolicy = NONE;
 
-    public <T> T build(Class<T> apiType, String url) {
+    public <T> T build(final Class<T> apiType, final String url) {
         return build(apiType, url, null);
     }
 
-    public <T> T build(Class<T> apiType, String url, T fallback) {
+    public <T> T build(final Class<T> apiType, final String url, final T fallback) {
         requestInterceptor(interceptorsFactory.getClientIdInterceptor());
 
         HystrixFeign.Builder builder =
@@ -83,22 +82,22 @@ public class HystrixFeignBuilder {
         return builder.target(apiType, url, fallback);
     }
 
-    public HystrixFeignBuilder client(Client client) {
+    public HystrixFeignBuilder client(final Client client) {
         this.client = client;
         return this;
     }
 
-    public HystrixFeignBuilder retryer(Retryer retryer) {
+    public HystrixFeignBuilder retryer(final Retryer retryer) {
         this.retryer = retryer;
         return this;
     }
 
-    public HystrixFeignBuilder encoder(Encoder encoder) {
+    public HystrixFeignBuilder encoder(final Encoder encoder) {
         this.encoder = encoder;
         return this;
     }
 
-    public HystrixFeignBuilder decoder(Decoder decoder) {
+    public HystrixFeignBuilder decoder(final Decoder decoder) {
         this.decoder = decoder;
         return this;
     }
@@ -108,79 +107,79 @@ public class HystrixFeignBuilder {
         return this;
     }
 
-    public HystrixFeignBuilder errorDecoder(ErrorDecoder errorDecoder) {
+    public HystrixFeignBuilder errorDecoder(final ErrorDecoder errorDecoder) {
         this.errorDecoder = errorDecoder;
         return this;
     }
 
-    public HystrixFeignBuilder options(Request.Options options) {
+    public HystrixFeignBuilder options(final Request.Options options) {
         this.options = options;
         return this;
     }
 
-    public HystrixFeignBuilder setterFactory(SetterFactory setterFactory) {
+    public HystrixFeignBuilder setterFactory(final SetterFactory setterFactory) {
         this.setterFactory = setterFactory;
         return this;
     }
 
-    public HystrixFeignBuilder queryMapEncoder(QueryMapEncoder queryMapEncoder) {
+    public HystrixFeignBuilder queryMapEncoder(final QueryMapEncoder queryMapEncoder) {
         this.queryMapEncoder = queryMapEncoder;
         return this;
     }
 
-    public HystrixFeignBuilder exceptionPropagationPolicy(ExceptionPropagationPolicy propagationPolicy) {
+    public HystrixFeignBuilder exceptionPropagationPolicy(final ExceptionPropagationPolicy propagationPolicy) {
         this.propagationPolicy = propagationPolicy;
         return this;
     }
 
-    public HystrixFeignBuilder requestInterceptor(RequestInterceptor requestInterceptor) {
+    public HystrixFeignBuilder requestInterceptor(final RequestInterceptor requestInterceptor) {
         this.requestInterceptors.add(requestInterceptor);
         return this;
     }
 
-    public HystrixFeignBuilder requestInterceptors(Iterable<RequestInterceptor> requestInterceptors) {
+    public HystrixFeignBuilder requestInterceptors(final Iterable<RequestInterceptor> requestInterceptors) {
         this.requestInterceptors.clear();
-        for (RequestInterceptor requestInterceptor : requestInterceptors) {
+        for (final RequestInterceptor requestInterceptor : requestInterceptors) {
             this.requestInterceptors.add(requestInterceptor);
         }
         return this;
     }
 
-    public HystrixFeignBuilder traceEnabled(LogOptions logOptions) {
+    public HystrixFeignBuilder traceEnabled(final LogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "logOptions cannot be null");
         return this;
     }
 
-    public HystrixFeignBuilder traceEnabled(boolean traceEnabled, Map<String, String> contextMap) {
+    public HystrixFeignBuilder traceEnabled(final boolean traceEnabled, final Map<String, String> contextMap) {
         return traceEnabled((requestHeaders) -> traceEnabled,
                             () -> contextMap == null ? Collections.emptyMap() : contextMap, (Pattern) null);
     }
 
-    public HystrixFeignBuilder traceEnabled(boolean traceEnabled,
-                                               Map<String, String> contextMap,
-                                               String sensitiveDataPattern) {
+    public HystrixFeignBuilder traceEnabled(final boolean traceEnabled,
+                                            final Map<String, String> contextMap,
+                                            final String sensitiveDataPattern) {
         return traceEnabled(traceEnabled, contextMap,
                             sensitiveDataPattern == null ? null : Pattern.compile(sensitiveDataPattern));
     }
 
-    public HystrixFeignBuilder traceEnabled(boolean traceEnabled,
-                                               Map<String, String> contextMap,
-                                               Pattern sensitiveDataPattern) {
+    public HystrixFeignBuilder traceEnabled(final boolean traceEnabled,
+                                            final Map<String, String> contextMap,
+                                            final Pattern sensitiveDataPattern) {
         return traceEnabled((requestHeaders) -> traceEnabled,
                             () -> contextMap == null ? Collections.emptyMap() : contextMap,
                             sensitiveDataPattern);
     }
 
-    public HystrixFeignBuilder traceEnabled(Function<Map<String, Collection<String>>, Boolean> traceEnabled,
-                                               Supplier<Map<String, String>> contextMap,
-                                               String sensitiveDataPattern) {
+    public HystrixFeignBuilder traceEnabled(final Function<Map<String, Collection<String>>, Boolean> traceEnabled,
+                                            final Supplier<Map<String, String>> contextMap,
+                                            final String sensitiveDataPattern) {
         return traceEnabled(traceEnabled, contextMap,
                             sensitiveDataPattern == null ? null : Pattern.compile(sensitiveDataPattern));
     }
 
-    public HystrixFeignBuilder traceEnabled(Function<Map<String, Collection<String>>, Boolean> traceEnabled,
-                                               Supplier<Map<String, String>> contextMap,
-                                               Pattern sensitiveDataPattern) {
+    public HystrixFeignBuilder traceEnabled(final Function<Map<String, Collection<String>>, Boolean> traceEnabled,
+                                            final Supplier<Map<String, String>> contextMap,
+                                            final Pattern sensitiveDataPattern) {
         this.logOptions = new LogOptions()
                               .traceEnabled(traceEnabled)
                               .contextMap(contextMap)
@@ -188,40 +187,40 @@ public class HystrixFeignBuilder {
         return this;
     }
 
-    public HystrixFeignBuilder retryOnIOException(boolean retryOnIOException) {
+    public HystrixFeignBuilder retryOnIOException(final boolean retryOnIOException) {
         this.retryOnIOException = retryOnIOException;
         return this;
     }
 
-    class InterceptorsFactory {
-        RequestClientIdInterceptor getClientIdInterceptor() {
+    /* default */ class InterceptorsFactory {
+        private RequestClientIdInterceptor getClientIdInterceptor() {
             return new RequestClientIdInterceptor();
         }
     }
 
-    class HystrixFeignBuilderFactory {
-        HystrixFeign.Builder builder() {
+    /* default */ class HystrixFeignBuilderFactory {
+        private HystrixFeign.Builder builder() {
             return HystrixFeign.builder();
         }
     }
 
-    static class LoggingDecoderWrapper implements Decoder {
+    private static class LoggingDecoderWrapper implements Decoder {
         private final Decoder decoder;
         private final boolean retryOnIOException;
 
-        LoggingDecoderWrapper(Decoder decoder, boolean retryOnIOException) {
+        public LoggingDecoderWrapper(final Decoder decoder, final boolean retryOnIOException) {
             this.decoder = Objects.requireNonNull(decoder, "Decoder cannot be null");
             this.retryOnIOException = retryOnIOException;
         }
 
         @Override
-        public Object decode(Response response, Type type) throws IOException, FeignException {
-            long start = System.currentTimeMillis();
+        public Object decode(final Response response, final Type type) throws IOException, FeignException {
+            final long start = System.currentTimeMillis();
             try {
                 return decoder.decode(response, type);
             } catch (IOException e) {
                 if (retryOnIOException) {
-                    throw Utils.convertToRetryableException(e, response);
+                    throw LogUtils.convertToRetryableException(e, response);
                 } else {
                     throw e;
                 }

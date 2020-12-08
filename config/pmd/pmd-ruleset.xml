@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<ruleset name="Spring Demo Ruleset"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+    <description>
+        PMD ruleset for Spring Demo application
+    </description>
+
+    <rule ref="category/java/bestpractices.xml">
+        <exclude name="JUnitTestContainsTooManyAsserts" />
+        <exclude name="JUnitTestsShouldIncludeAssert" />
+    </rule>
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod">
+        <properties>
+            <property name="ignoredAnnotations"
+                      value="org.springframework.web.bind.annotation.ExceptionHandler|org.junit.jupiter.api.Test">
+            </property>
+        </properties>
+    </rule>
+    <rule ref="category/java/security.xml" />
+    <rule ref="category/java/design.xml/ExcessiveMethodLength" />
+    <rule ref="category/java/design.xml/NPathComplexity" />
+    <rule ref="category/java/design.xml/ExcessiveParameterList" />
+    <rule ref="category/java/performance.xml" />
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="UnnecessaryAnnotationValueElement" />
+        <exclude name="ConfusingTernary" />
+        <exclude name="AtLeastOneConstructor" />
+        <exclude name="ShortVariable" />
+        <exclude name="OnlyOneReturn" />
+        <exclude name="ShortClassName" />
+        <exclude name="LongVariable" />
+        <exclude name="TooManyStaticImports" />
+        <exclude name="UselessParentheses" />
+        <exclude name="GenericsNaming" />
+    </rule>
+    <rule ref="category/java/errorprone.xml">
+        <exclude name="AvoidLiteralsInIfCondition" />
+        <exclude name="AvoidDuplicateLiterals" />
+        <exclude name="BeanMembersShouldSerialize" />
+        <exclude name="AvoidFieldNameMatchingMethodName" />
+        <exclude name="DataflowAnomalyAnalysis" />
+        <exclude name="MissingSerialVersionUID" />
+    </rule>
+</ruleset>

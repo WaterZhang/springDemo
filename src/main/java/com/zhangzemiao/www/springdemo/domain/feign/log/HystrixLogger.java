@@ -20,36 +20,42 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 
+@SuppressWarnings({"PMD.MoreThanOneLogger", "PMD.AvoidReassigningParameters"})
 public class HystrixLogger {
 
-    static final String EXECUTED_STATE = "executed";
+    private static final String EXECUTED_STATE = "executed";
     private Logger transactionLogger;
     private Logger errorLogger;
     private TransactionAttributesOverrides transactionAttributesOverrides;
     private MDCListener mdcListener;
 
-    public HystrixLogger(LoggerFactoryProvider loggerFactoryProvider) {
+    public HystrixLogger(final LoggerFactoryProvider loggerFactoryProvider) {
         this(loggerFactoryProvider, null);
     }
 
-    public HystrixLogger(LoggerFactoryProvider loggerFactoryProvider, TransactionAttributesOverrides transactionAttributesOverrides) {
+    public HystrixLogger(final LoggerFactoryProvider loggerFactoryProvider,
+                         final TransactionAttributesOverrides transactionAttributesOverrides) {
         this(loggerFactoryProvider, transactionAttributesOverrides, null);
     }
 
-    public HystrixLogger(LoggerFactoryProvider loggerFactoryProvider, TransactionAttributesOverrides transactionAttributesOverrides, MDCListener mdcListener) {
+    public HystrixLogger(final LoggerFactoryProvider loggerFactoryProvider,
+                         final TransactionAttributesOverrides transactionAttributesOverrides,
+                         final MDCListener mdcListener) {
         this.transactionLogger = loggerFactoryProvider.getLogger(LoggerConstants.TRANSACTION_LOGGER_NAME);
         this.errorLogger = loggerFactoryProvider.getLogger(LoggerConstants.ERROR_LOGGER_NAME);
         this.transactionAttributesOverrides = transactionAttributesOverrides;
         this.mdcListener = mdcListener;
     }
 
-    public <T> void logTransaction(HystrixInvokableInfo<T> commandInstance) {
+    public <T> void logTransaction(final HystrixInvokableInfo<T> commandInstance) {
         logTransaction(commandInstance, new LinkedHashMap<>());
     }
 
-    public <T> void logTransaction(HystrixInvokableInfo<T> commandInstance, Map<String, String> eventMap) {
-        if (eventMap == null)
+    public <T> void logTransaction(final HystrixInvokableInfo<T> commandInstance,
+                                   Map<String, String> eventMap) {
+        if (eventMap == null) {
             eventMap = new LinkedHashMap<>();
+        }
 
         populateTransactionFields(commandInstance, eventMap, null);
         if (transactionAttributesOverrides != null) {
@@ -60,29 +66,34 @@ public class HystrixLogger {
         notifyMdcListenerOnTransaction();
     }
 
-    public <T> void logError(HystrixInvokableInfo<T> commandInstance, Exception e) {
+    public <T> void logError(final HystrixInvokableInfo<T> commandInstance,
+                             final Exception e) {
         logError(commandInstance, e, new LinkedHashMap<>());
     }
 
-    public <T> void logError(HystrixInvokableInfo<T> commandInstance, Throwable e, Map<String, String> eventMap) {
-        if (eventMap == null)
+    public <T> void logError(final HystrixInvokableInfo<T> commandInstance,
+                             final Throwable e,
+                             Map<String, String> eventMap) {
+        if (eventMap == null) {
             eventMap = new HashMap<>();
-
+        }
         populateTransactionFields(commandInstance, eventMap, e);
         printErrorMessage(e, eventMap);
         notifyMdcListenerOnError();
     }
 
-    public <T> void logError(HystrixInvokable<T> hystrixInvokable, HystrixRuntimeException.FailureType failureType, Throwable e) {
-        Map<String, String> params = new LinkedHashMap<>();
+    public <T> void logError(final HystrixInvokable<T> hystrixInvokable,
+                             final HystrixRuntimeException.FailureType failureType,
+                             final Throwable e) {
+        final Map<String, String> params = new LinkedHashMap<>();
         params.put("failureType", failureType.name());
         populateTransactionFields(hystrixInvokable, params, e);
         printErrorMessage(e, params);
         notifyMdcListenerOnError();
     }
 
-    private void printErrorMessage(Throwable e, Map<String, String> eventMap) {
-        String message = String.format("%s message=[Transaction Error logging]", Utils.asSplunkLogString(eventMap));
+    private void printErrorMessage(final Throwable e, final Map<String, String> eventMap) {
+        final String message = String.format("%s message=[Transaction Error logging]", LogUtils.asSplunkLogString(eventMap));
         if (e instanceof HystrixBadRequestException) {
             errorLogger.warn(message);
         } else {
@@ -90,25 +101,29 @@ public class HystrixLogger {
         }
     }
 
-    private static void populateTransactionFields(HystrixInvokable invokable, Map<String, String> eventMap, Throwable e) {
+    private static void populateTransactionFields(final HystrixInvokable invokable,
+                                                  final Map<String, String> eventMap,
+                                                  final Throwable e) {
         if (invokable instanceof HystrixInvokableInfo) {
             populateTransactionFields((HystrixInvokableInfo) invokable, eventMap, e);
         }
     }
 
-    private static void populateTransactionFields(HystrixInvokableInfo invokableInfo, Map<String, String> eventMap, Throwable e) {
+    private static void populateTransactionFields(final HystrixInvokableInfo invokableInfo,
+                                                  final Map<String, String> eventMap,
+                                                  final Throwable e) {
 
         eventMap.put(LoggerConstants.EVENT_NAME, constructEventName(invokableInfo));
         eventMap.put(LoggerConstants.GROUP_NAME, constructGroupName(invokableInfo));
 
-        Throwable exception = getException(e, invokableInfo);
+        final Throwable exception = getException(e, invokableInfo);
         eventMap.put(LoggerConstants.SUCCESS, isExecutionSuccessful(invokableInfo, exception));
 
         // add failure reason if present. Special handling for timeouts, as failedExecutionException is not set by Hystrix in case of timeouts
         if (invokableInfo.isResponseTimedOut()) {
             eventMap.put(LoggerConstants.FAILURE_REASON, "timed-out");
         } else if (exception != null) {
-            eventMap.put(LoggerConstants.FAILURE_REASON, Utils.asSplunkMessage(String.format("Exception: %s", exception.getMessage())));
+            eventMap.put(LoggerConstants.FAILURE_REASON, LogUtils.asSplunkMessage(String.format("Exception: %s", exception.getMessage())));
         }
 
         eventMap.put(LoggerConstants.THREAD_TIMEOUT, Integer.toString(invokableInfo.getProperties().executionTimeoutInMilliseconds().get()));
@@ -117,9 +132,9 @@ public class HystrixLogger {
         eventMap.put(LoggerConstants.CIRCUIT_OPEN, Boolean.toString(invokableInfo.isCircuitBreakerOpen()));
         eventMap.put(LoggerConstants.THREAD_POOL_REJECTED, Boolean.toString(invokableInfo.isResponseRejected()));
 
-        HystrixThreadPoolKey threadPoolKey = invokableInfo.getThreadPoolKey();
+        final HystrixThreadPoolKey threadPoolKey = invokableInfo.getThreadPoolKey();
         if (threadPoolKey != null) {
-            HystrixThreadPoolMetrics threadPoolMetrics = HystrixThreadPoolMetrics.getInstance(threadPoolKey);
+            final HystrixThreadPoolMetrics threadPoolMetrics = HystrixThreadPoolMetrics.getInstance(threadPoolKey);
             if (threadPoolMetrics != null) {
                 eventMap.put(LoggerConstants.THREAD_POOL_SIZE, Objects.toString(threadPoolMetrics.getProperties().coreSize().get()));
                 eventMap.put(LoggerConstants.CURRENT_THREAD_POOL_SIZE, Objects.toString(threadPoolMetrics.getCurrentCorePoolSize()));
@@ -129,7 +144,7 @@ public class HystrixLogger {
         eventMap.put(LoggerConstants.DURATION, Integer.toString(invokableInfo.getExecutionTimeInMilliseconds()));
     }
 
-    private static Throwable getException(Throwable e, HystrixInvokableInfo invokableInfo) {
+    private static Throwable getException(final Throwable e, final HystrixInvokableInfo invokableInfo) {
         Throwable throwable = null;
         if (e != null) {
             throwable = e;
@@ -141,23 +156,24 @@ public class HystrixLogger {
         return throwable;
     }
 
-    private String constructEventLog(Map<String, String> eventMap, String separator) {
+    private String constructEventLog(final Map<String, String> eventMap, final String separator) {
         final List<String> keyValuePairs = new ArrayList<>();
-        for (String key : eventMap.keySet()) {
+        for (final String key : eventMap.keySet()) {
             keyValuePairs.add(key + "=" + eventMap.get(key));
         }
         return StringUtils.join(keyValuePairs, separator);
     }
 
-    private static <T> String constructEventName(HystrixInvokableInfo<T> commandInstance) {
+    private static <T> String constructEventName(final HystrixInvokableInfo<T> commandInstance) {
         return commandInstance.getCommandKey().name();
     }
 
-    private static String constructGroupName(HystrixInvokableInfo invokableInfo) {
+    private static String constructGroupName(final HystrixInvokableInfo invokableInfo) {
         return invokableInfo.getCommandGroup() == null ? "null" : invokableInfo.getCommandGroup().name();
     }
 
-    private static String isExecutionSuccessful(HystrixInvokableInfo invokableInfo, Throwable e) {
+    @SuppressWarnings("PMD.LinguisticNaming")
+    private static String isExecutionSuccessful(final HystrixInvokableInfo invokableInfo, final Throwable e) {
         return (invokableInfo.getExecutionEvents().size() <= 0)
                ? EXECUTED_STATE
                : Boolean.toString(invokableInfo.isSuccessfulExecution() || e instanceof FeignApplicationException);

@@ -12,10 +12,11 @@ public class RequestClientIdInterceptor implements RequestInterceptor {
     private SystemPropertyProvider systemPropertyProvider = new SystemPropertyProvider();
 
     @Override
-    public void apply(RequestTemplate template) {
-        String clientIdValue = systemPropertyProvider.getProperty(APPLICATION_NAME_PROPERTY);
+    public void apply(final RequestTemplate template) {
+        final String clientIdValue = systemPropertyProvider.getProperty(APPLICATION_NAME_PROPERTY);
 
-        if(StringUtils.isNotEmpty(clientIdValue))
+        if(StringUtils.isNotEmpty(clientIdValue)) {
             template.header(CLIENT_ID, clientIdValue);
+        }
     }
 }

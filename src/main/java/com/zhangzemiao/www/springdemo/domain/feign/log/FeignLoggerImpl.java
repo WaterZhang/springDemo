@@ -22,20 +22,20 @@ public class FeignLoggerImpl {
 
     private LogOptions logOptions;
 
-    FeignLoggerImpl(LoggerFactoryProvider loggerFactoryProvider,
-                    LogOptions logOptions) {
+    /* default */ FeignLoggerImpl(final LoggerFactoryProvider loggerFactoryProvider,
+                    final LogOptions logOptions) {
         this.traceLogger = loggerFactoryProvider.getLogger(LoggerConstants.TRACE_LOGGER_NAME);
         this.logOptions = logOptions;
     }
 
-    void log(String configKey, String format, Object... args) {
+    public void log(final String configKey, final String format, final Object... args) {
         // do nothing since feign uses this method for multiple purposes
         // all trancation and trace logging should be done in logAndRebufferResponse and logRequest methods
     }
 
-    void logRequest(String configKey, Logger.Level logLevel, Request request) {
+    public void logRequest(final String configKey, final Logger.Level logLevel, final Request request) {
         if (logOptions.isEnabled(getRequestHeaders(request))) {
-            Map<String, String> requestParams = new LinkedHashMap<>();
+            final Map<String, String> requestParams = new LinkedHashMap<>();
             populateLoggerContextAttributes(requestParams);
             requestParams.put(LoggerConstants.LOG_LEVEL, logLevel.name());
             requestParams.put(LoggerConstants.EVENT_NAME, constructEventName(configKey));
@@ -45,19 +45,23 @@ public class FeignLoggerImpl {
             int bodyLength = 0;
             if (request.body() != null) {
                 bodyLength = request.body().length;
-                String body = Utils.decodeOrDefault(request.body(), request.charset(), BINARY_DATA);
-                requestParams.put(LoggerConstants.REQUEST, Utils.asSplunkMessage(body));
+                final String body = LogUtils.decodeOrDefault(request.body(), request.charset(), BINARY_DATA);
+                requestParams.put(LoggerConstants.REQUEST, LogUtils.asSplunkMessage(body));
             }
             requestParams.put(LoggerConstants.BODY_LENGTH, Long.toString(bodyLength));
             populateRequestHeaders(request, requestParams);
-            traceLogger.info(String.format("%s message=[Request Trace logging]", prepareForLogging(Utils.asSplunkLogString(requestParams))));
+            traceLogger.info(String.format("%s message=[Request Trace logging]", prepareForLogging(LogUtils.asSplunkLogString(requestParams))));
         }
     }
 
-    Response logAndRebufferResponse(String configKey, Logger.Level logLevel, Response response, long elapsedTime) throws IOException {
-        Request request = response.request();
+    @SuppressWarnings("PMD")
+    public Response logAndRebufferResponse(final String configKey,
+                                           final Logger.Level logLevel,
+                                           Response response,
+                                           final long elapsedTime) throws IOException {
+        final Request request = response.request();
         if (logOptions.isEnabled(getRequestHeaders(request))) {
-            Map<String, String> responseParams = new LinkedHashMap<>();
+            final Map<String, String> responseParams = new LinkedHashMap<>();
             populateLoggerContextAttributes(responseParams);
             responseParams.put(LoggerConstants.LOG_LEVEL, logLevel.name());
             responseParams.put(LoggerConstants.EVENT_NAME, constructEventName(configKey));
@@ -73,7 +77,7 @@ public class FeignLoggerImpl {
                 response = populateAndRebufferResponse(response, responseParams);
             } catch (IOException e) {
                 if (logOptions.isRetryOnIOException()) {
-                    throw Utils.convertToRetryableException(e, response);
+                    throw LogUtils.convertToRetryableException(e, response);
                 } else {
                     throw e;
                 }
@@ -84,63 +88,64 @@ public class FeignLoggerImpl {
                 responseParams.put(LoggerConstants.DURATION, Long.toString(elapsedTime + readDuration));
             }
             populateResponseHeaders(response, responseParams);
-            traceLogger.info(String.format("%s message=[Response Trace logging]", prepareForLogging(Utils.asSplunkLogString(responseParams))));
+            traceLogger.info(String.format("%s message=[Response Trace logging]", prepareForLogging(LogUtils.asSplunkLogString(responseParams))));
         }
         return response;
     }
 
+    @SuppressWarnings("PMD")
     private Response populateAndRebufferResponse(Response response, Map<String, String> responseParams) throws IOException {
         responseParams.put(LoggerConstants.BODY_LENGTH, Long.toString(0));
         if (response.body() != null) {
             byte[] bodyData = Util.toByteArray(response.body().asInputStream());
             int bodyLength = bodyData.length;
             responseParams.put(LoggerConstants.BODY_LENGTH, Long.toString(bodyLength));
-            String body = Utils.decodeOrDefault(bodyData, UTF_8, BINARY_DATA);
-            responseParams.put(LoggerConstants.RESPONSE, Utils.asSplunkMessage(body));
+            String body = LogUtils.decodeOrDefault(bodyData, UTF_8, BINARY_DATA);
+            responseParams.put(LoggerConstants.RESPONSE, LogUtils.asSplunkMessage(body));
             response = response.toBuilder().body(bodyData).build();
         }
         return response;
     }
 
-    private Map<String, Collection<String>> getRequestHeaders(Request request) {
+    private Map<String, Collection<String>> getRequestHeaders(final Request request) {
         return request == null || request.headers() == null ? emptyMap() : request.headers();
     }
 
-    private void populateLoggerContextAttributes(Map<String, String> requestParams) {
+    private void populateLoggerContextAttributes(final Map<String, String> requestParams) {
         requestParams.putAll(logOptions.getContextMap());
     }
 
-    private void populateResponseHeaders(Response response, Map<String, String> params) {
-        Map<String, Collection<String>> headers = Utils.defaultIfNull(response.headers(), emptyMap());
+    private void populateResponseHeaders(final Response response, final Map<String, String> params) {
+        final Map<String, Collection<String>> headers = LogUtils.defaultIfNull(response.headers(), emptyMap());
         populateHeaders(logOptions.getResponseHeadersToLog().stream()
                                   .collect(Collectors.toMap(h -> h, headers::get)), params);
     }
 
-    private void populateHeaders(Map<String, Collection<String>> headers, Map<String, String> params) {
+    private void populateHeaders(final Map<String, Collection<String>> headers, final Map<String, String> params) {
         if (headers != null) {
-            for (String field : headers.keySet()) {
-                for (String value : valuesOrEmpty(headers, field)) {
-                    params.put(LoggerConstants.HEADER_PREFIX + field, Utils.asSplunkMessage(value));
+            for (final String field : headers.keySet()) {
+                for (final String value : valuesOrEmpty(headers, field)) {
+                    params.put(LoggerConstants.HEADER_PREFIX + field, LogUtils.asSplunkMessage(value));
                 }
             }
         }
     }
 
-    private String constructEventName(String configKey) {
-        String[] args = configKey.split("[#]");
-        String methodName = args.length == 2 ? args[1] : configKey;
-        int index = methodName.indexOf('(');
+    private String constructEventName(final String configKey) {
+        final String[] args = configKey.split("[#]");
+        final String methodName = args.length == 2 ? args[1] : configKey;
+        final int index = methodName.indexOf('(');
         return index == -1 ? methodName : methodName.substring(0, index);
     }
 
-    private void populateRequestHeaders(Request request, Map<String, String> params) {
-        Map<String, Collection<String>> headers = Utils.defaultIfNull(request.headers(), emptyMap());
+    private void populateRequestHeaders(final Request request, final Map<String, String> params) {
+        final Map<String, Collection<String>> headers = LogUtils.defaultIfNull(request.headers(), emptyMap());
         populateHeaders(logOptions.getRequestHeadersToLog().stream()
                                   .collect(Collectors.toMap(h -> h, headers::get)), params);
     }
 
-    private String prepareForLogging(String message) {
-        AtomicReference<String> messageRef = new AtomicReference<>(message);
+    private String prepareForLogging(final String message) {
+        final AtomicReference<String> messageRef = new AtomicReference<>(message);
         try {
             if (logOptions.getSensitiveDataPattern() != null) {
                 messageRef.set(logOptions.getSensitiveDataPattern().matcher(message).replaceAll(SENSITIVE_DATA_MASK));

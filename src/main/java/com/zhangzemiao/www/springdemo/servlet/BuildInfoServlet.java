@@ -14,11 +14,10 @@ public class BuildInfoServlet extends HttpServlet {
     private static final String JSON_RESPONSE =
         "{ \"version\": \"%s\", \"buildTime\": \"%s\", \"branch\": \"%s\", \"applicationVersion\": \"%s\", \"name\": \"%s\", \"bomVersion\":\"%s\", \"parentArtifact\":\"%s\", \"parentVersion\":\"%s\",\"bomInfo\":\"%s\"}";
 
-    public BuildInfoServlet(){
-    }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(final HttpServletRequest request,
+                         final HttpServletResponse response) throws ServletException, IOException {
         response.setHeader("Cache-Control", "no-cache,no-store,max-age=0");
         response.setStatus(200);
         response.getWriter().write(getJsonResponse());

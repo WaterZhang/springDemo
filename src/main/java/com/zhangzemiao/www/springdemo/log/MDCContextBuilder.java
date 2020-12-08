@@ -10,6 +10,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,8 @@ public class MDCContextBuilder {
     static final private List<String> HIDE_THESE_QUERY_PARAMS =
         Arrays.asList(new String[] { });
 
-    public Map<String, String> buildMDCContext(HttpServletRequest request, Object handler) {
+    public Map<String, String> buildMDCContext(final HttpServletRequest request,
+                                               final Object handler) {
         final Map<String, String> contextMap = new HashMap<>();
         if(request != null) {
             populateServletContext(request, handler, contextMap);
@@ -38,7 +40,9 @@ public class MDCContextBuilder {
         return contextMap;
     }
 
-    private void populateServletContext(HttpServletRequest request, Object handler, Map<String, String> contextMap) {
+    private void populateServletContext(final HttpServletRequest request,
+                                        final Object handler,
+                                        final Map<String, String> contextMap) {
         {
             contextMap.put("requestUrl", request.getRequestURL().toString());
             contextMap.put("host", StringUtils.defaultString(request.getHeader(HEADER_HOST), DEFAULT_VALUE));
@@ -49,27 +53,29 @@ public class MDCContextBuilder {
             contextMap.put("awsRegion", StringUtils.trimToNull(System.getenv().get("AWS_REGION")));
 
             // if there is no ORIGIN-REQUEST-ID header then set it to requestId
-            String originRequestId = StringUtils.defaultString(request.getHeader(HEADER_ORIGIN_REQUEST_ID),
+            final String originRequestId = StringUtils.defaultString(request.getHeader(HEADER_ORIGIN_REQUEST_ID),
                                                                (String) contextMap.getOrDefault("requestId", DEFAULT_VALUE));
             contextMap.put("originRequestId", originRequestId);
 
             final Map<String, String> requestHeaders = getRequestHeaders(request);
-            for (String header : requestHeaders.keySet()) {
-                if (!HIDE_THESE_REQUEST_HEADERS.contains(header.toLowerCase())) {
+            for (final String header : requestHeaders.keySet()) {
+                if (!HIDE_THESE_REQUEST_HEADERS.contains(header.toLowerCase(Locale.getDefault()))) {
                     contextMap.put("requestHeader_" + header, requestHeaders.get(header));
                 }
             }
 
             final Map<String, List<String>> queryParams = getQueryParams(request);
-            for (String param : queryParams.keySet()) {
-                if (!HIDE_THESE_QUERY_PARAMS.contains(param.toLowerCase())) {
+            for (final String param : queryParams.keySet()) {
+                if (!HIDE_THESE_QUERY_PARAMS.contains(param.toLowerCase(Locale.getDefault()))) {
                     contextMap.put("queryParam_" + param, StringUtils.join(queryParams.get(param), ","));
                 }
             }
         }
     }
 
-    private String getPageName(HttpServletRequest request, Object handler){
+    @SuppressWarnings("PMD.UnusedFormalParameter")
+    private String getPageName(final HttpServletRequest request,
+                               final Object handler){
         String pageId;
         if (handler instanceof HandlerMethod) {
             final HandlerMethod method = (HandlerMethod) handler;
@@ -88,7 +94,7 @@ public class MDCContextBuilder {
         return pageId;
     }
 
-    private Map<String, String> getRequestHeaders(HttpServletRequest request) {
+    private Map<String, String> getRequestHeaders(final HttpServletRequest request) {
         final Map<String, String> requestHeaders = new HashMap<>();
         final Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements()) {
@@ -100,7 +106,7 @@ public class MDCContextBuilder {
         return requestHeaders;
     }
 
-    private Map<String, List<String>> getQueryParams(HttpServletRequest request) {
+    private Map<String, List<String>> getQueryParams(final HttpServletRequest request) {
         if (StringUtils.isEmpty(request.getQueryString())) {
             return Collections.emptyMap();
         }
@@ -109,8 +115,8 @@ public class MDCContextBuilder {
                      .collect(Collectors.groupingBy(AbstractMap.SimpleImmutableEntry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toList())));
     }
 
-    private AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) {
-        final int idx = it.indexOf("=");
+    private AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(final String it) {
+        final int idx = it.indexOf('=');
         final String key = idx > 0 ? it.substring(0, idx) : it;
         final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : null;
         return new AbstractMap.SimpleImmutableEntry<>(key, value);

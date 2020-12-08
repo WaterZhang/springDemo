@@ -31,7 +31,7 @@ public class ServletContextConfig implements WebMvcConfigurer, ServletContextAwa
     private final Environment environment;
     private ServletContext servletContext;
     private final HystrixInitializingInterceptor hystrixInitializingInterceptor;
-    private static final String[] REST_APIS = new String[]{
+    private static final String[] REST_APIS = {
         "/api/*",
         "/api/**",
     };
@@ -62,7 +62,7 @@ public class ServletContextConfig implements WebMvcConfigurer, ServletContextAwa
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(hystrixInitializingInterceptor)
                 .addPathPatterns(REST_APIS)
                 .order(1);
@@ -101,4 +101,7 @@ public class ServletContextConfig implements WebMvcConfigurer, ServletContextAwa
         }
     }
 
+    public ServletContext getServletContext() {
+        return servletContext;
+    }
 }

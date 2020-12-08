@@ -11,7 +11,7 @@ public class GreetingPageController {
 
     @GetMapping("/greeting.html")
     public ModelAndView greeting(
-        @RequestParam(name="name", required = false, defaultValue = "World") String name){
+        @RequestParam(name="name", required = false, defaultValue = "World") final String name){
 
         final ModelMap map = new ModelMap();
         map.put("name", name);

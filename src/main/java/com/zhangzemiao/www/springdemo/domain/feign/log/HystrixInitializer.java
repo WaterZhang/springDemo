@@ -25,12 +25,12 @@ public class HystrixInitializer {
 
     private List<ICallableWrapper> callableWrapperList = new ArrayList<>();
 
-    private HystrixInitializer(boolean isMDCAware,
-                               boolean allowCoreThreadTimeOut,
-                               Map<String, String> configuration,
-                               boolean useFeign8CompatibleStrategy,
-                               HystrixLogger hystrixLogger,
-                               List<ICallableWrapper> customCallableWrapperList) {
+    private HystrixInitializer(final boolean isMDCAware,
+                               final boolean allowCoreThreadTimeOut,
+                               final Map<String, String> configuration,
+                               final boolean useFeign8CompatibleStrategy,
+                               final HystrixLogger hystrixLogger,
+                               final List<ICallableWrapper> customCallableWrapperList) {
         this.isMDCAware = isMDCAware;
         this.allowCoreThreadTimeOut = allowCoreThreadTimeOut;
         this.configuration = configuration;
@@ -40,7 +40,7 @@ public class HystrixInitializer {
         addCallableWrappers(customCallableWrapperList);
     }
 
-    private void addCallableWrappers(List<ICallableWrapper> customCallableWrapperList) {
+    private void addCallableWrappers(final List<ICallableWrapper> customCallableWrapperList) {
 
         if (this.isMDCAware) {
             this.callableWrapperList.add(new MdcAwareCallableWrapper());
@@ -63,7 +63,7 @@ public class HystrixInitializer {
     }
 
 
-    private static void registerConfiguration(Map<String, String> configuration) {
+    private static void registerConfiguration(final Map<String, String> configuration) {
         Validate.notNull(configuration);
         final AbstractConfiguration configManager = ConfigurationManager.getConfigInstance();
         for (final Map.Entry<String, String> entry : configuration.entrySet()) {
@@ -79,31 +79,31 @@ public class HystrixInitializer {
         private HystrixLogger hystrixLogger;
         private List<ICallableWrapper> callableWrapperList;
 
-        public Builder(Map<String, String> configuration) {
+        public Builder(final Map<String, String> configuration) {
             this.configuration = configuration;
         }
 
-        public Builder withIsMDCAware(boolean isMDCAware) {
+        public Builder withIsMDCAware(final boolean isMDCAware) {
             this.isMDCAware = isMDCAware;
             return this;
         }
 
-        public Builder withAllowCoreThreadTimeOut(boolean allowCoreThreadTimeOut) {
+        public Builder withAllowCoreThreadTimeOut(final boolean allowCoreThreadTimeOut) {
             this.allowCoreThreadTimeOut = allowCoreThreadTimeOut;
             return this;
         }
 
-        public Builder withUseFeign8CompatibleStrategy(boolean useFeign8CompatibleStrategy) {
+        public Builder withUseFeign8CompatibleStrategy(final boolean useFeign8CompatibleStrategy) {
             this.useFeign8CompatibleStrategy = useFeign8CompatibleStrategy;
             return this;
         }
 
-        public Builder withHystrixLogger(HystrixLogger hystrixLogger) {
+        public Builder withHystrixLogger(final HystrixLogger hystrixLogger) {
             this.hystrixLogger = hystrixLogger;
             return this;
         }
 
-        public Builder withCallableWrapperList(List<ICallableWrapper> callableWrapperList) {
+        public Builder withCallableWrapperList(final List<ICallableWrapper> callableWrapperList) {
             this.callableWrapperList = callableWrapperList;
             return this;
         }

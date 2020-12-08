@@ -8,7 +8,7 @@ import org.slf4j.MDC;
 public class MdcAwareCallableWrapper implements ICallableWrapper {
 
     @Override
-    public <T> Callable<T> wrapCallable(Callable<T> callable) {
+    public <T> Callable<T> wrapCallable(final Callable<T> callable) {
         return new MdcAwareCallable<>(callable, MDC.getCopyOfContextMap());
     }
 
@@ -18,7 +18,7 @@ public class MdcAwareCallableWrapper implements ICallableWrapper {
 
         private final Map<String, String> callerThreadContextMap;
 
-        public MdcAwareCallable(Callable<T> callable, Map<String, String> callerThreadContextMap) {
+        public MdcAwareCallable(final Callable<T> callable, final Map<String, String> callerThreadContextMap) {
             this.callable = callable;
             this.callerThreadContextMap = callerThreadContextMap != null ? callerThreadContextMap : new HashMap<>();
         }
@@ -26,7 +26,7 @@ public class MdcAwareCallableWrapper implements ICallableWrapper {
         @Override
         public T call() {
             // capture values set on current thread
-            Map<String, String> currentThreadContextMap = MDC.getCopyOfContextMap();
+            final Map<String, String> currentThreadContextMap = MDC.getCopyOfContextMap();
 
             try {
                 MDC.setContextMap(callerThreadContextMap);
