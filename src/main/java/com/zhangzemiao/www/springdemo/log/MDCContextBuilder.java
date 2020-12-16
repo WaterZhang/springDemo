@@ -58,18 +58,20 @@ public class MDCContextBuilder {
             contextMap.put("originRequestId", originRequestId);
 
             final Map<String, String> requestHeaders = getRequestHeaders(request);
-            for (final String header : requestHeaders.keySet()) {
-                if (!HIDE_THESE_REQUEST_HEADERS.contains(header.toLowerCase(Locale.getDefault()))) {
-                    contextMap.put("requestHeader_" + header, requestHeaders.get(header));
+            for(final Map.Entry<String, String> headerEntry : requestHeaders.entrySet()){
+                if (!HIDE_THESE_REQUEST_HEADERS.contains(headerEntry.getKey().toLowerCase(Locale.getDefault()))) {
+                    contextMap.put("requestHeader_" + headerEntry.getKey(), headerEntry.getValue());
                 }
             }
 
             final Map<String, List<String>> queryParams = getQueryParams(request);
-            for (final String param : queryParams.keySet()) {
-                if (!HIDE_THESE_QUERY_PARAMS.contains(param.toLowerCase(Locale.getDefault()))) {
-                    contextMap.put("queryParam_" + param, StringUtils.join(queryParams.get(param), ","));
+            for(final Map.Entry<String, List<String>> queryEntry : queryParams.entrySet()) {
+                if (!HIDE_THESE_QUERY_PARAMS.contains(queryEntry.getKey().toLowerCase(Locale.getDefault()))){
+                    contextMap.put("queryParam_" + queryEntry.getKey(),
+                                   StringUtils.join(queryEntry.getValue(), ","));
                 }
             }
+
         }
     }
 

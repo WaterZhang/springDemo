@@ -1,0 +1,59 @@
+/*
+ * SpotBugs Plugin
+ *
+ * Performs quality checks on your project's Java source files using SpotBugs and generates reports from these checks
+ * https://spotbugs.readthedocs.io/en/stable/gradle.html
+ *
+ * Gradle Plugin -> https://plugins.gradle.org/plugin/com.github.spotbugs
+ * Configuration options -> https://spotbugs-gradle-plugin.netlify.app/com/github/spotbugs/snom/spotbugsextension
+ * Bug Descriptions -> https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html
+*/
+apply plugin: 'com.github.spotbugs'
+
+spotbugs {
+    toolVersion = '4.2.0'
+
+    //Property to enable progress reporting during the analysis. Default value is false.
+    showProgress = true
+
+    // Whether to allow the build to continue if there are warnings.
+    ignoreFailures = false
+
+    // HIGH	    The report level to report high priority detected bugs in the report.
+    // LOW	    The report level to report all detected bugs in the report.
+    // MEDIUM	The report level to report medium and high priority detected bugs in the report.
+    reportLevel = 'MEDIUM'
+
+
+    // LESS	    The effort level to reduce the computation cost.
+    // MAX	    The effort level that maximize the computation cost.
+    // MIN	    The effort level to minimize the computation cost.
+    // MORE	    The effort level that uses more computation cost.
+    effort = 'MORE'
+
+    // The directory where reports will be generated.
+    reportsDir = file("$project.buildDir/reports/spotbugs")
+}
+
+spotbugsMain {
+    //The filename of a filter specifying bugs to exclude from being reported.
+    excludeFilter = file("$rootProject.projectDir/config/spotbugs/spotbugs-main-exclude-filter.xml")
+
+    reports {
+        html {
+            enabled = true
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
+spotbugsTest {
+    //The filename of a filter specifying bugs to exclude from being reported.
+    excludeFilter = file("$rootProject.projectDir/config/spotbugs/spotbugs-test-exclude-filter.xml")
+
+    reports {
+        html {
+            enabled = true
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}

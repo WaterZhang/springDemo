@@ -5,6 +5,7 @@ plugins {
     id 'war'
     id 'maven'
     id 'org.asciidoctor.convert' version '1.5.6'
+    id "com.github.spotbugs" version "4.2.0"
 }
 
 ext {
@@ -32,6 +33,7 @@ apply plugin: 'idea'
 apply plugin: 'org.asciidoctor.convert'
 
 apply from: 'gradle/pmd.gradle'
+apply from: 'gradle/spotbugs.gradle'
 
 repositories {
     mavenCentral()

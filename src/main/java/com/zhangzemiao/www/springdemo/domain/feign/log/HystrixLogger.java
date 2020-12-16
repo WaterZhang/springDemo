@@ -158,8 +158,8 @@ public class HystrixLogger {
 
     private String constructEventLog(final Map<String, String> eventMap, final String separator) {
         final List<String> keyValuePairs = new ArrayList<>();
-        for (final String key : eventMap.keySet()) {
-            keyValuePairs.add(key + "=" + eventMap.get(key));
+        for(final Map.Entry<String, String> entry : eventMap.entrySet()){
+            keyValuePairs.add(entry.getKey() + "=" + entry.getValue());
         }
         return StringUtils.join(keyValuePairs, separator);
     }

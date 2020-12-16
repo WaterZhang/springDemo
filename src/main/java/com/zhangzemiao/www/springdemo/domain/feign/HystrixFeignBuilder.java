@@ -192,13 +192,13 @@ public class HystrixFeignBuilder {
         return this;
     }
 
-    /* default */ class InterceptorsFactory {
+    /* default */ static class InterceptorsFactory {
         private RequestClientIdInterceptor getClientIdInterceptor() {
             return new RequestClientIdInterceptor();
         }
     }
 
-    /* default */ class HystrixFeignBuilderFactory {
+    /* default */static class HystrixFeignBuilderFactory {
         private HystrixFeign.Builder builder() {
             return HystrixFeign.builder();
         }
