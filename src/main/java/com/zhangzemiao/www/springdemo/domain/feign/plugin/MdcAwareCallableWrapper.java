@@ -12,7 +12,7 @@ public class MdcAwareCallableWrapper implements ICallableWrapper {
         return new MdcAwareCallable<>(callable, MDC.getCopyOfContextMap());
     }
 
-    private class MdcAwareCallable<T> implements Callable<T> {
+    private static class MdcAwareCallable<T> implements Callable<T> {
 
         private final Callable<T> callable;
 

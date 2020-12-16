@@ -347,8 +347,8 @@ public class SpringLogger {
         final Map<String, Object> data = eventData.getData();
         final List<String> eventEntries = new ArrayList<>();
 
-        for (final String key : data.keySet()) {
-            eventEntries.add(key + '=' + Objects.toString(data.get(key)));
+        for(final Map.Entry<String, Object> dataEntry : data.entrySet()){
+            eventEntries.add(dataEntry.getKey() + '=' + Objects.toString(dataEntry.getValue()));
         }
         return msg + ' ' + StringUtils.join(eventEntries, ',');
     }

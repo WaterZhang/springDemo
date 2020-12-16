@@ -14,9 +14,10 @@ import java.util.Objects;
 public class LogUtils {
     public static String asSplunkLogString(final Map<String, String> parameters) {
         final StringBuilder out = new StringBuilder();
-        for (final String name:  parameters.keySet()) {
-            final String value = Objects.toString(parameters.get(name));
-            out.append(String.format("%s=%s, ", Objects.toString(name), value));
+        for(final Map.Entry<String, String> entry : parameters.entrySet()){
+            final String value = Objects.toString(entry.getValue());
+            final String name = Objects.toString(entry.getKey());
+            out.append(String.format("%s=%s, ", name, value));
         }
         return out.toString();
     }

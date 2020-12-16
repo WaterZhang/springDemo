@@ -158,6 +158,7 @@ public class FeignLoggerImpl {
                 });
             }
         } catch (Exception ignored) {
+            return messageRef.get();
         }
         return messageRef.get();
     }
