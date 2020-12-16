@@ -35,15 +35,15 @@
 
 ### Log4j2 <a name="log4j2"></a>
 日志记录采用Log4j2，可以自己定制。我这里结合了Hystrix，创建了Transaction Log和Trace Log。
-> check src/main/resources/log4j2.xml
-> Transaction Log用来记录APP与downstream service之间的HTTP Call.
-> Trace Log用来记录具体的HTTP request 和 response
-> 自己还可以根据不同的运行环境(比如dev, test and prod)，定制Log Level.
+* check src/main/resources/log4j2.xml
+* Transaction Log用来记录APP与downstream service之间的HTTP Call.
+* Trace Log用来记录具体的HTTP request 和 response
+* 自己还可以根据不同的运行环境(比如dev, test and prod)，定制Log Level.
 
 ### [OpenFeign](https://github.com/OpenFeign/feign) & [Hystrix](https://github.com/Netflix/Hystrix) <a name="openfeign"></a>
-> add Transaction and Trace log
-> Hystrix support Circuit breaker pattern
-> Check Hystrix configuration [here](https://github.com/Netflix/Hystrix/wiki/Configuration).
+* add Transaction and Trace log
+* Hystrix support Circuit breaker pattern
+* Check Hystrix configuration [here](https://github.com/Netflix/Hystrix/wiki/Configuration).
 
 ### [PMD](https://pmd.github.io/) & [spotbugs](https://github.com/spotbugs/spotbugs) <a name="pmd"></a>
 静态代码分析工具，引用比较流行的PMD和Spotbugs。其中Spotbugs是[FindBugs](https://github.com/findbugsproject/findbugs)的替代接班者。
