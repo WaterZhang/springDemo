@@ -21,6 +21,11 @@ build spring boot APP, I will start to integrate other frameworks in this projec
 
 ## Support [PMD](https://pmd.github.io/)
 
+## Support [spotbugs](https://github.com/spotbugs/spotbugs) 
+It is the spiritual successor of [FindBugs](https://github.com/findbugsproject/findbugs)
+
+## Code check
+> ./gradlew check
 
 ## build
 > ./gradlew clean build
