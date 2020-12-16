@@ -19,10 +19,8 @@ build spring boot APP, I will start to integrate other frameworks in this projec
 ## [Hystrix](https://github.com/Netflix/Hystrix) support Circuit breaker pattern
 > Check hystrix configuration [here](https://github.com/Netflix/Hystrix/wiki/Configuration).
 
-## Support [PMD](https://pmd.github.io/)
-
-## Support [spotbugs](https://github.com/spotbugs/spotbugs) 
-It is the spiritual successor of [FindBugs](https://github.com/findbugsproject/findbugs)
+## Support [PMD](https://pmd.github.io/) & [spotbugs](https://github.com/spotbugs/spotbugs) 
+spotbugs is the spiritual successor of [FindBugs](https://github.com/findbugsproject/findbugs)
 
 ## Code check
 > ./gradlew check
