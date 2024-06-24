@@ -3,7 +3,7 @@
 <Configuration debug="true">
     <Properties>
         <Property name="application.home">.</Property>
-        <Property name="application.name">springDemo</Property>
+        <Property name="application.name">springdemo</Property>
         <Property name="application.environment">dev</Property>
     </Properties>
 

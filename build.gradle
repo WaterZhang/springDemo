@@ -23,7 +23,7 @@ configurations.all {
 }
 
 group 'com.zhangzemiao.www.springdemo'
-version '1.0-SNAPSHOT'
+version '1.0'
 sourceCompatibility = '11'
 
 apply plugin: 'java'
