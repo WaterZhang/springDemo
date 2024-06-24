@@ -67,3 +67,21 @@
 本地访问
 > https://localhost:8443
 
+### Docker local build and running in Win 10
+docker build app image
+> docker build -t springdemo:1.0 .
+
+docker image check
+> docker images
+
+docker run app image
+> docker run -d --name demo -p 8443:8443 springdemo:1.0
+
+docker log check
+> docker logs -f demo
+
+docker stop
+> docker stop demo
+
+docker app image remove
+> docker rm demo 
